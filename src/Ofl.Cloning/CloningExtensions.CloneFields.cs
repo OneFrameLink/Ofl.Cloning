@@ -11,11 +11,11 @@ namespace Ofl.Cloning
     public static partial class CloningExtensions
     {
         public static T CloneFields<T>(this T from)
-            where T : new() =>
-            // TODO: Get FormatterServices which has GetSafeUninitializedObject, remove new() constraint.
+            where T : notnull, new() =>
             from.CloneFields(new T());
 
         public static T CloneFields<T>(this T from, T to)
+            where T : notnull
         {
             // Validate parameters.
             if (from == null) throw new ArgumentNullException(nameof(from));
@@ -39,18 +39,14 @@ namespace Ofl.Cloning
             // Lock on the copiers.
             lock (CopyFieldCopiers)
             {
-                // The existing copier.
-                Action<object, object> copier;
-
                 // Try and get the value.
-                if (!CopyFieldCopiers.TryGetValue(key, out copier))
-                {
-                    // Set the copier.
-                    copier = CreateCopier(key);
+                if (CopyFieldCopiers.TryGetValue(key, out var copier)) return copier;
 
-                    // Add it.
-                    CopyFieldCopiers.Add(key, copier);
-                }
+                // Set the copier.
+                copier = CreateCopier(key);
+
+                // Add it.
+                CopyFieldCopiers.Add(key, copier);
 
                 // Return the copier.
                 return copier;

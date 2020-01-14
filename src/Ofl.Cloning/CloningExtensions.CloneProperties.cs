@@ -9,9 +9,12 @@ namespace Ofl.Cloning
     public static partial class CloningExtensions
     {
         public static TDestination CloneProperties<TSource, TDestination>(this TSource source)
-            where TDestination : new() => source.CloneProperties(new TDestination());
+            where TSource : notnull
+            where TDestination : notnull, new() => source.CloneProperties(new TDestination());
 
         public static TDestination CloneProperties<TSource, TDestination>(this TSource source, TDestination destination)
+            where TSource : notnull
+            where TDestination : notnull
         {
             // Validate parameters.
             if (source == null) throw new ArgumentNullException(nameof(source));
