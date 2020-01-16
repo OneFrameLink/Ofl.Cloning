@@ -11,7 +11,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Ofl.Linq" Version="3.0.16" />
+    <PackageReference Include="Ofl.Linq" Version="3.0.17" />
     <PackageReference Include="Ofl.Reflection" Version="3.0.12" />
   </ItemGroup>
 </Project>
